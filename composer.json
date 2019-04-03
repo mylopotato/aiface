@@ -1,0 +1,30 @@
+{
+    "name": "mylopotato/aiface",
+    "description": "Facemash clone",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mylopotato",
+            "email": "mylopoto@yandex.ru"
+        }
+    ],
+    "require": {
+        "php": ">=7.3",
+        "ext-mbstring": "*",
+        "ext-pdo": "*",
+        "ext-json": "*",
+        "ext-bcmath": "*",
+        "php-pm/php-pm": "*",
+        "symfony/psr-http-message-bridge": "^1.2",
+        "nyholm/psr7": "^1.1",
+        "vlucas/phpdotenv": "^3.3",
+        "symfony/http-kernel": "^4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "PHPPM\\": "",
+            "Mylopotato\\Aiface\\": "src/Mylopotato/Aiface/"
+        }
+    }
+}
