@@ -2,6 +2,8 @@
 
 namespace PHPPM\Bridges;
 
+use DI\Container;
+use DI\ContainerBuilder;
 use PHPPM\Bootstraps\ApplicationEnvironmentAwareInterface;
 use Mylopotato\Aiface\Application;
 
@@ -30,6 +32,7 @@ class Bootstrapper implements ApplicationEnvironmentAwareInterface
     /**
      * @param string $appenv
      * @param bool $debug
+     * @throws \Exception
      */
     public function initialize($appenv, $debug)
     {
@@ -46,13 +49,17 @@ class Bootstrapper implements ApplicationEnvironmentAwareInterface
         return $this->app;
     }
 
+    /**
+     * @throws \Exception
+     */
     protected function initApp(): void
     {
         if (!$this->app) {
+            $rootPath = \dirname(__DIR__);
             $autoloadPath = \implode(
                 DIRECTORY_SEPARATOR,
                 [
-                    \dirname(__DIR__),
+                    $rootPath,
                     "vendor",
                     "autoload.php",
                 ]
@@ -60,7 +67,15 @@ class Bootstrapper implements ApplicationEnvironmentAwareInterface
             /** @noinspection PhpIncludeInspection */
             require $autoloadPath;
 
-            $this->app = new Application();
+            $bundles = require $rootPath . "/config/bundles.php";
+
+            $containerBuilder = new ContainerBuilder();
+            $container = $containerBuilder->build();
+            $container->set("bundles", $bundles);
+
+            //
+
+            $this->app = new Application($container);
         }
     }
 }

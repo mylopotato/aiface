@@ -1,4 +1,7 @@
 .ppm
 .idea
-ppm.json
-vendor
+/ppm.json
+/vendor
+/build
+*.log
+*.cache
