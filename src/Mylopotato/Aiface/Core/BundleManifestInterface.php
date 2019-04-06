@@ -2,6 +2,8 @@
 
 namespace Mylopotato\Aiface\Core;
 
+use DI\Definition\Source\DefinitionSource;
+
 /**
  * Interface
  *
@@ -10,7 +12,12 @@ namespace Mylopotato\Aiface\Core;
 interface BundleManifestInterface
 {
     /**
-     * @return array[]
+     * @return array[]|DefinitionSource[]
      */
     public function getDefinitions(): array;
+
+    /**
+     * @return array[]
+     */
+    public function getRoutes(): array;
 }

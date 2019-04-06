@@ -36,16 +36,6 @@ class ApplicationTest extends TestCase
         $this->requestMock = \Mockery::mock(Request::class);
 
         // Prepare mocks
-        $this
-            ->containerMock
-            ->shouldReceive("has")
-            ->withArgs(["bundles"])
-            ->andReturnTrue();
-        $this
-            ->containerMock
-            ->shouldReceive("get")
-            ->withArgs(["bundles"])
-            ->andReturn([]);
     }
 
     /**
@@ -58,7 +48,6 @@ class ApplicationTest extends TestCase
 
     /**
      * @return Application
-     * @throws \Mylopotato\Aiface\Exceptions\ApplicationInitializationException
      */
     private function getInstance(): Application
     {

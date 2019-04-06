@@ -3,10 +3,7 @@
 namespace Mylopotato\Aiface;
 
 use DI\Container;
-use DI\DependencyException;
-use DI\NotFoundException;
-use Mylopotato\Aiface\Core\BundleManifestInterface;
-use Mylopotato\Aiface\Exceptions\ApplicationInitializationException;
+use Mylopotato\Aiface\Core\Interfaces\Router;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,15 +24,20 @@ class Application implements HttpKernelInterface
     private $container;
 
     /**
+     * @var Router
+     */
+    private $router;
+
+    /**
      * Application constructor.
      *
+     * @param Router $router
      * @param Container $container
-     * @throws ApplicationInitializationException
      */
-    public function __construct(Container $container)
+    public function __construct(Router $router, Container $container)
     {
         $this->container = $container;
-        $this->initBundles();
+        $this->router = $router;
     }
 
     /**
@@ -57,42 +59,5 @@ class Application implements HttpKernelInterface
         );
 
         return $psrHttpFactory->createResponse($response);
-    }
-
-    /**
-     * @throws ApplicationInitializationException
-     */
-    private function initBundles()
-    {
-        try {
-            if (!$this->container->has("bundles")) {
-                throw new \RuntimeException("Bundles config not found");
-            }
-
-            /** @var string[] $bundles */
-            $bundles = $this->container->get("bundles");
-
-            foreach ($bundles as $bundleNS) {
-                /** @var BundleManifestInterface $manifestInstance */
-
-                if (false) { // @FIXME: To implement
-                    $manifestInstance = $this
-                        ->container
-                        ->make($bundleNS . "\\BundleManifest");
-                }
-            }
-        } catch (NotFoundException $e) {
-            throw new ApplicationInitializationException(
-                $e->getMessage(),
-                $e->getCode(),
-                $e
-            );
-        } catch (DependencyException $e) {
-            throw new ApplicationInitializationException(
-                $e->getMessage(),
-                $e->getCode(),
-                $e
-            );
-        }
     }
 }

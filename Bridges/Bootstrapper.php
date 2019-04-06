@@ -4,6 +4,7 @@ namespace PHPPM\Bridges;
 
 use DI\Container;
 use DI\ContainerBuilder;
+use Mylopotato\Aiface\Core\BundleManifestInterface;
 use PHPPM\Bootstraps\ApplicationEnvironmentAwareInterface;
 use Mylopotato\Aiface\Application;
 
@@ -67,15 +68,34 @@ class Bootstrapper implements ApplicationEnvironmentAwareInterface
             /** @noinspection PhpIncludeInspection */
             require $autoloadPath;
 
-            $bundles = require $rootPath . "/config/bundles.php";
-
             $containerBuilder = new ContainerBuilder();
+            $bundles = require $rootPath . "/config/bundles.php";
+            $rootDefinitions = require $rootPath . "/config/core-definitions.php";
+            $containerBuilder->addDefinitions($rootDefinitions);
+
+            $routes = [];
+
+            foreach ($bundles as $bundleNS) {
+                /** @var BundleManifestInterface $manifestInstance */
+                $fqnBundleClassName = $bundleNS . "\\BundleManifest";
+                $manifestInstance = new $fqnBundleClassName();
+                $containerBuilder->addDefinitions($manifestInstance->getDefinitions());
+                $routes = \array_merge($routes, $manifestInstance->getRoutes());
+            }
+
             $container = $containerBuilder->build();
+
+            $container->set("env", $this->appenv);
+            $container->set("debug", $this->isDebug);
             $container->set("bundles", $bundles);
+            $container->set("routes", $routes);
 
-            //
-
-            $this->app = new Application($container);
+            $this->app = $container->make(
+                Application::class,
+                [
+                    "container" => $container,
+                ]
+            );
         }
     }
 }

@@ -1,19 +1,17 @@
 <?php
 
-namespace Mylopotato\Aiface\Bundles\Main\Controllers;
+namespace AifaceTests\Stubs;
 
 use Mylopotato\Aiface\Core\Controller;
 
 /**
- * Main controller
+ * Class StubController
  *
  * @author Mylopotato <mylopotato@yandex.ru>
+ * @package AifaceTests\Stubs
  */
-class Main extends Controller
+class StubController extends Controller
 {
-    /**
-     * Index action
-     */
     public function index()
     {
 
