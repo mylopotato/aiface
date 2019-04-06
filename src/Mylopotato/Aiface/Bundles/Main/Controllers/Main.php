@@ -16,6 +16,6 @@ class Main extends Controller
      */
     public function index()
     {
-
+        echo "Hello world. YOLO!";
     }
 }

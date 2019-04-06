@@ -3,6 +3,8 @@
 namespace Mylopotato\Aiface;
 
 use DI\Container;
+use Mylopotato\Aiface\Core\Exceptions\MethodNotAllowedException;
+use Mylopotato\Aiface\Core\Exceptions\NotFoundException;
 use Mylopotato\Aiface\Core\Interfaces\Router;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
@@ -45,10 +47,33 @@ class Application implements HttpKernelInterface
      */
     public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
     {
-        // @TODO: Handle request
+        try {
+            $handlerInfo = $this->router->getHandler($request);
+        } catch (NotFoundException $e) {
+            throw $e; // @FIXME Make graceful error
+        } catch (MethodNotAllowedException $e) {
+            throw $e; // @FIXME Make graceful error
+        }
 
         $response = new Response();
-        $response->setContent("YOLO");
+        $this->container->set("response", $response);
+        $controllerInstance = $this
+            ->container
+            ->make($handlerInfo->getClassName(), []);
+        \ob_start();
+        \call_user_func_array(
+            [
+                $controllerInstance,
+                $handlerInfo->getMethodName()
+            ],
+            $handlerInfo->getArguments()
+        );
+        $output = \ob_get_contents();
+        \ob_end_clean();
+
+        if ($output) {
+            $response->setContent($output);
+        }
 
         $psr17Factory = new Psr17Factory();
         $psrHttpFactory = new PsrHttpFactory(
