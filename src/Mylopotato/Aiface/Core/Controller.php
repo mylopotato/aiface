@@ -2,6 +2,8 @@
 
 namespace Mylopotato\Aiface\Core;
 
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Class Controller
  *
@@ -9,5 +11,18 @@ namespace Mylopotato\Aiface\Core;
  */
 abstract class Controller
 {
+    /**
+     * @var Response
+     */
+    protected $response;
 
+    /**
+     * Controller constructor.
+     *
+     * @param Response $response
+     */
+    public function __construct(Response $response)
+    {
+        $this->response = $response;
+    }
 }

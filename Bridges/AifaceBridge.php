@@ -5,14 +5,15 @@ namespace PHPPM\Bridges;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
+use Mylopotato\Aiface\ApplicationFactory;
 use Mylopotato\Aiface\Application;
 
 /**
- * Class Bridge
+ * Class AifaceBridge
  *
  * @author Mylopotato <mylopotato@yandex.ru>
  */
-class Bridge implements BridgeInterface // @FIXME Rename to AifaceBridge
+class AifaceBridge implements BridgeInterface
 {
     /**
      * @var Application
@@ -20,7 +21,7 @@ class Bridge implements BridgeInterface // @FIXME Rename to AifaceBridge
     protected $app;
 
     /**
-     * @var Bootstrapper
+     * @var ApplicationFactory
      */
     private $bootstrapper;
 
@@ -28,10 +29,11 @@ class Bridge implements BridgeInterface // @FIXME Rename to AifaceBridge
      * @param string|null $appBootstrap
      * @param string $appenv
      * @param bool $debug
+     * @throws \Exception
      */
     public function bootstrap($appBootstrap, $appenv, $debug)
     {
-        $this->bootstrapper = new Bootstrapper();
+        $this->bootstrapper = new ApplicationFactory();
         $this->bootstrapper->initialize($appenv, $debug);
         $this->app = $this->bootstrapper->getApplication();
     }

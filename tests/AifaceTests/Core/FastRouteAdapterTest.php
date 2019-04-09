@@ -2,12 +2,12 @@
 
 namespace AifaceTests\Core;
 
+use AifaceTests\Cases\AifaceTestCase;
 use AifaceTests\Stubs\StubController;
 use Mylopotato\Aiface\Core\Exceptions\RouterException;
 use Mylopotato\Aiface\Core\FastRouteAdapter;
 use Mylopotato\Aiface\Core\HandlerInfo;
 use Mylopotato\Aiface\Core\Interfaces\Router;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
  * @author Mylopotato <mylopotato@yandex.ru>
  * @package PHPPM\tests\AifaceTests\Core
  */
-class FastRouteAdapterTest extends TestCase
+class FastRouteAdapterTest extends AifaceTestCase
 {
     private $routes = [];
 

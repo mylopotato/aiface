@@ -27,7 +27,7 @@
         "psr-4": {
             "PHPPM\\": "",
             "Mylopotato\\Aiface\\": "src/Mylopotato/Aiface/",
-            "AifaceTests\\": "tests/"
+            "AifaceTests\\": "tests/AifaceTests/"
         }
     },
     "require-dev": {

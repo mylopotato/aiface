@@ -1,19 +1,17 @@
 <?php
 
-namespace PHPPM\Bridges;
+namespace Mylopotato\Aiface;
 
-use DI\Container;
 use DI\ContainerBuilder;
 use Mylopotato\Aiface\Core\BundleManifestInterface;
 use PHPPM\Bootstraps\ApplicationEnvironmentAwareInterface;
-use Mylopotato\Aiface\Application;
 
 /**
- * Class Bootstrap
+ * Class ApplicationFactory
  *
  * @author Mylopotato <mylopotato@yandex.ru>
  */
-class Bootstrapper implements ApplicationEnvironmentAwareInterface
+class ApplicationFactory implements ApplicationEnvironmentAwareInterface
 {
     /**
      * @var Application
@@ -56,7 +54,7 @@ class Bootstrapper implements ApplicationEnvironmentAwareInterface
     protected function initApp(): void
     {
         if (!$this->app) {
-            $rootPath = \dirname(__DIR__);
+            $rootPath = \dirname(\dirname(\dirname(__DIR__))); // @FIXME Зарефачить
             $autoloadPath = \implode(
                 DIRECTORY_SEPARATOR,
                 [
